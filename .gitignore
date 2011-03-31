@@ -7,4 +7,5 @@
 *.release.macos.x86.i
 *.release.mt.macos.x86.a
 *.release.mt.macos.x86.i
+example
 
