@@ -32,6 +32,8 @@ bbdoc: A connection to a redis server.
 EndRem
 Type TRedisConnection
 
+    Const NULL_STRING:String = "<~~-NULL-~~>"
+
     Field port:Int
     Field host:String
     Field stream:TSocketStream = Null
@@ -154,35 +156,42 @@ Type TRedisConnection
     Method _RecieveData:String()
         If _EnsureOpen() Then
             Local line:String = stream.ReadLine()
-            Local res:String
+            Local res:String = ""
 
             Select line[..1]
                 Case "+", "-", ":"
-                    res = line[1..]
+                    res :+ line[1..]
                 Case "$"
                     Local number:Int = line[1..].ToInt()
                     If number = -1 Then
-                        res = Null
+                        res :+ NULL_STRING + "~r~n"
                     Else
                         Local buff:Byte[] = New Byte[number]
                         stream.Read(buff, number)
-                        res = String.FromCString(buff).Trim()
+                        res :+ String.FromCString(buff)
                     EndIf
                 Case "*"
                     Local count:Int = line[1..].ToInt()
-                    For Local i:Int = 0 To count
-                        line = stream.ReadLine()
-                        Local number:Int = line[1..].ToInt()
 
-                        Local buff:Byte[] = New Byte[number]
-                        stream.Read(buff, number)
-                        res :+ String.FromCString(buff)
-                    Next
+                    If count > 0 Then
+                        For Local i:Int = 0 To count
+                            line = stream.ReadLine()
+                            Local number:Int = line[1..].ToInt()
+
+                            If number = -1 Then
+                                res :+ NULL_STRING + "~r~n"
+                            ElseIf number > 0 Then
+                                Local buff:Byte[] = New Byte[number]
+                                stream.Read(buff, number)
+                                res :+ String.FromCString(buff).Trim() + "~r~n"
+                            EndIf
+                        Next
+                    EndIf
                 Default
                     res = "Unknown response type:~r~n" + line
             EndSelect
 
-            Return res
+            Return res.Trim()
         EndIf
     EndMethod
 
