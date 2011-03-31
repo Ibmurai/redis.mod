@@ -117,9 +117,9 @@ Type TRedisConnection
         Else
             Select isOpen
                 Case True
-                    Throw "Connection is already open."
+                    Throw "Connection is open."
                 Case False
-                    Throw "Connection is already closed."
+                    Throw "Connection is closed."
             EndSelect
         EndIf
     EndMethod
@@ -200,4 +200,3 @@ Type TRedisConnection
     EndMethod
 
 EndType
-
