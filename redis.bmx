@@ -9,6 +9,8 @@ ModuleInfo "License: BSD License"
 
 Import BRL.SocketStream
 
+Private
+
 Rem
 bbdoc: Returns param1 XOR param2.
 EndRem
@@ -26,6 +28,8 @@ Function BooleanToString:String(param:Int)
         Return "False"
     EndIf
 EndFunction
+
+Public
 
 Rem
 bbdoc: A connection to a redis server.
