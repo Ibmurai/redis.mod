@@ -32,9 +32,9 @@ EndFunction
 Public
 
 Rem
-bbdoc: A connection to a redis server.
+bbdoc: A Redis client.
 EndRem
-Type TRedisConnection
+Type TRedisClient
 
     Const NULL_STRING:String = "<~~-NULL-~~>"
 
@@ -48,8 +48,8 @@ Type TRedisConnection
     bbdoc: Create a new connection to a redis server. The connection
     should be opened by calling Open() on the returned connection.
     EndRem
-    Function Create:TRedisConnection(host:String = "localhost", port:Int = 6379)
-        Local conn:TRedisConnection = New TRedisConnection
+    Function Create:TRedisClient(host:String = "localhost", port:Int = 6379)
+        Local conn:TRedisClient = New TRedisClient
 
         conn.port = port
         conn.host = host

@@ -21,7 +21,7 @@ The goal is to have code like this work:
 
     Import Pub.Redis
     
-    Local redis:TRedisConnection = TRedisConnection.Create()
+    Local redis:TRedisClient = TRedisClient.Create()
     
     redis.Open()
     
@@ -36,7 +36,7 @@ But the commands have not been wrapped yet, so for now, this is what you do:
 
     Import Pub.Redis
     
-    Local redis:TRedisConnection = TRedisConnection.Create()
+    Local redis:TRedisClient = TRedisClient.Create()
     Local request:String[]
     
     If redis.Open()

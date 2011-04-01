@@ -2,7 +2,7 @@ SuperStrict
 
 Import Pub.Redis
 
-Local redis:TRedisConnection = TRedisConnection.Create()
+Local redis:TRedisClient = TRedisClient.Create()
 Local request:String[]
 
 If redis.Open()
