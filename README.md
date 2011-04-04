@@ -74,6 +74,13 @@ But the commands have not been wrapped yet, so for now, this is what you do:
         Print("Could not connect to Redis server at " + redis.host + ":" + redis.port)
     EndIf
 
+HISTORY
+-------
+
+### v0.1a
+
+ *  First version. Fully working implementation of the protocol.
+
 TODO
 ----
 
