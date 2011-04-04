@@ -3,38 +3,18 @@ SuperStrict
 Import Pub.Redis
 
 Local redis:TRedisClient = TRedisClient.Create()
-Local request:String[]
 
 If redis.Open()
-    request = ["PING"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
+    Print redis.PING_()
+    Print redis.INFO_()
+    redis.ZADD_("someSet", 1, "one")
+    redis.ZADD_("someSet", 2, "two")
 
-    request = ["INFO"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
+    'ZRANGE is not yet implemented:    
+    redis._SendRequest(["ZRANGE", "someSet", "0", "-1"])
+    Print redis._RecieveData()
 
-    request = ["ZADD", "someSet", "1", "one"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
-
-    request = ["ZADD", "someSet", "2", "two"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
-
-    request = ["ZRANGE", "someSet", "0", "-1"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
-
-    request = ["PING"]
-    Print("Sending: " + " ".Join(request))
-    redis._SendRequest(request)
-    Print("Recieved: " + redis._RecieveData())
+    Print redis.PING_()
 
     redis.Close()
 Else
