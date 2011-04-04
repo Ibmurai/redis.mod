@@ -9,10 +9,9 @@ Requirements
 Building
 --------
 
-1. You should have a working [BlitzMax](http://blitzmax.com/Products/blitzmax.php) 1.41 installation.
-2. You should have a working [Redis](http://www.redis.io/) server
-3. Clone this project in `/path/to/blitzmax/mod/pub.mod/redis.mod`.
-4. Build the module with `bmk makemods -h pub.redis` and `bmk makemods pub.redis` to get both the multithreaded and singlethreaded versions.
+1. You should have a working [BlitzMax](http://blitzmax.com/Products/blitzmax.php) 1.42 installation.
+2. Clone this project in `/path/to/blitzmax/mod/pub.mod/redis.mod`.
+3. Build the module with `bmk makemods -h pub.redis` and `bmk makemods pub.redis` to get both the multithreaded and singlethreaded versions.
 
 Usage
 -----
@@ -66,8 +65,9 @@ But the commands have not been wrapped yet, so for now, this is what you do:
 TODO
 ----
 
-1. Make the example work / get rid of the "Unknown response type:"-errors.
+1. Make the example work / get rid of the "Unknown response type:"-error.
 2. Wrap all the commands.
 3. Look into delivering the more complex responses in a different way than just a string.
 4. Build an extensive testing application.
 5. Implement a non blocking mode.
+
