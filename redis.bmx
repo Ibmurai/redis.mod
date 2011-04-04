@@ -135,7 +135,7 @@ Type TRedisClient
 
     Rem
     bbdoc: Internally used method.
-    Takes the args array and sends it to
+    Takes the args array and sends it as a request to the Redis server.
     EndRem
     Method _SendRequest(args:String[])
         If _EnsureOpen() Then
