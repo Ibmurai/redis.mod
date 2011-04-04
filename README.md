@@ -19,44 +19,56 @@ Usage
 The goal is to have code like this work:
 
     Import Pub.Redis
-    
+
     Local redis:TRedisClient = TRedisClient.Create()
-    
+
     redis.Open()
-    
+
     Print redis.PING()
     Print redis.INFO()
     redis.ZADD("someSet", 1, "one")
     redis.ZADD("someSet", 2, "two")
     Print redis.ZRANGE("someSet", 0, -1)
     redis.Close()
-    
+
 But the commands have not been wrapped yet, so for now, this is what you do:
 
     Import Pub.Redis
-    
+
     Local redis:TRedisClient = TRedisClient.Create()
     Local request:String[]
-    
+
     If redis.Open()
         request = ["PING"]
+        Print("Sending: " + " ".Join(request))
         redis._SendRequest(request)
-        Print(redis._RecieveData())
-        
+        Print("Recieved: " + redis._RecieveData())
+
         request = ["INFO"]
+        Print("Sending: " + " ".Join(request))
         redis._SendRequest(request)
-        Print(redis._RecieveData())
-        
+        Print("Recieved: " + redis._RecieveData())
+
         request = ["ZADD", "someSet", "1", "one"]
+        Print("Sending: " + " ".Join(request))
         redis._SendRequest(request)
-        
+        Print("Recieved: " + redis._RecieveData())
+
         request = ["ZADD", "someSet", "2", "two"]
+        Print("Sending: " + " ".Join(request))
         redis._SendRequest(request)
-        
+        Print("Recieved: " + redis._RecieveData())
+
         request = ["ZRANGE", "someSet", "0", "-1"]
+        Print("Sending: " + " ".Join(request))
         redis._SendRequest(request)
-        Print(redis._RecieveData())
-        
+        Print("Recieved: " + redis._RecieveData())
+
+        request = ["PING"]
+        Print("Sending: " + " ".Join(request))
+        redis._SendRequest(request)
+        Print("Recieved: " + redis._RecieveData())
+
         redis.Close()
     Else
         Print("Could not connect to Redis server at " + redis.host + ":" + redis.port)
@@ -65,9 +77,8 @@ But the commands have not been wrapped yet, so for now, this is what you do:
 TODO
 ----
 
-1. Make the example work / get rid of the "Unknown response type:"-error.
-2. Wrap all the commands.
-3. Look into delivering the more complex responses in a different way than just a string.
-4. Build an extensive testing application.
-5. Implement a non blocking mode.
+1. Wrap all the commands.
+2. Look into delivering the more complex responses in a different way than just a string.
+3. Build an extensive testing application.
+4. Implement a non blocking mode.
 

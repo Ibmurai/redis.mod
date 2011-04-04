@@ -170,8 +170,10 @@ Type TRedisClient
                     If number = -1 Then
                         res :+ NULL_STRING + "~r~n"
                     Else
-                        Local buff:Byte[] = New Byte[number]
-                        stream.Read(buff, number)
+                        'The buffer size is +3 because we need room for ~r~n~0
+                        Local buff:Byte[] = New Byte[number + 3]
+                        buff[number + 2] = 0
+                        stream.Read(buff, number + 2)
                         res :+ String.FromCString(buff)
                     EndIf
                 Case "*"
@@ -185,11 +187,16 @@ Type TRedisClient
                             If number = -1 Then
                                 res :+ NULL_STRING + "~r~n"
                             ElseIf number > 0 Then
-                                Local buff:Byte[] = New Byte[number]
+                                'The buffer size is +1 because we need room for ~0
+                                Local buff:Byte[] = New Byte[number + 1]
+                                buff[number] = 0
                                 stream.Read(buff, number)
                                 res :+ String.FromCString(buff).Trim() + "~r~n"
                             EndIf
                         Next
+                        'Read the final ~r~n, but ditch it,
+                        'because we added it manually above.
+                        res :+ stream.ReadLine()
                     EndIf
                 Default
                     res = "Unknown response type:~r~n" + line
@@ -198,5 +205,55 @@ Type TRedisClient
             Return res.Trim()
         EndIf
     EndMethod
+
+    Rem
+    bbdoc: Internally used method.
+    Will block and read from the stream until the string sequence given
+    is encountered. It will ignore the first character, when looking for
+    the sequence, to ensure you read more than the marker itself.
+
+    This was used for debugging. I have left it here, cause I may need it
+    again :P
+
+    Method _ReadUntil:String(seq:String)
+        WriteStdout("_ReadUntil called.~r~n")
+
+        Local buff:Byte[] = New Byte[256]
+        Local offset:Byte = 0
+        Local i:Int, start:Int
+        Local seqFound:Int
+
+        Repeat
+            Try
+                WriteStdout("   offset = " + offset + "~r~n")
+
+                buff[offset] = stream.ReadByte()
+
+                WriteStdout("   READ ~q" + Chr(buff[offset]) + "~q.~r~n")
+
+                offset :+ 1
+                If offset > seq.length Then
+                    start = offset - seq.length
+                    seqFound = True
+                    For i = start To offset - 1
+                        If Not (buff[i] = seq[i - start])
+                            seqFound = False
+                        EndIf
+                    Next
+                    If seqFound Then
+                        buff[offset] = Asc("~0")
+
+                        Local res:String = String.FromCString(buff)
+                        WriteStdout("   RETURN ~q" + res + "~q~r~n")
+
+                        Return res
+                    EndIf
+                EndIf
+            Catch ex:TStreamReadException
+                ' Do nothing / wait / repeat
+            EndTry
+        Forever
+    EndMethod
+    EndRem
 
 EndType
