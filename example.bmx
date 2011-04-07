@@ -9,11 +9,7 @@ If redis.Open()
     Print redis.INFO_()
     redis.ZADD_("someSet", 1, "one")
     redis.ZADD_("someSet", 2, "two")
-
-    'ZRANGE is not yet implemented:    
-    redis._SendRequest(["ZRANGE", "someSet", "0", "-1"])
-    Print redis._RecieveData()
-
+    Print redis.ZRANGE_("someSet", 0, -1)
     Print redis.PING_()
 
     redis.Close()

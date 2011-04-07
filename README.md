@@ -5,6 +5,7 @@ Requirements
 ------------
 
  *  This client utilizes "The new unified request protocol", so it will only work with Redis >= 1.2.
+ *  The "full" (see TODO) Redis 2.2.4 command set is available, but commands will only work with a Redis server supporting them (i.e OBJECT is only available from Redis 2.2.3+).
 
 Building
 --------
@@ -20,43 +21,20 @@ Usage
 
  *  The Redis commands all end with an underscore, to eliminate keyword clashes (i.e. SELECT) and distinguish Redis functionality from other functionality on the TRedisClient type.
 
-The goal is to have code like this work:
+Use it like this:
 
     Import Pub.Redis
-    
+
     Local redis:TRedisClient = TRedisClient.Create()
-    
+
     If redis.Open()
         Print redis.PING_()
         Print redis.INFO_()
         redis.ZADD_("someSet", 1, "one")
         redis.ZADD_("someSet", 2, "two")
-        Print redis.ZRANGE_("someSet", 0, -1)    
+        Print redis.ZRANGE_("someSet", 0, -1)
         Print redis.PING_()
-    
-        redis.Close()
-    Else
-        Print("Could not connect to Redis server at " + redis.host + ":" + redis.port)
-    EndIf
 
-But all of the commands have not been wrapped yet, so for now, this is what you do:
-
-    Import Pub.Redis
-    
-    Local redis:TRedisClient = TRedisClient.Create()
-    
-    If redis.Open()
-        Print redis.PING_()
-        Print redis.INFO_()
-        redis.ZADD_("someSet", 1, "one")
-        redis.ZADD_("someSet", 2, "two")
-    
-        'ZRANGE is not yet implemented:    
-        redis._SendRequest(["ZRANGE", "someSet", "0", "-1"])
-        Print redis._RecieveData()
-    
-        Print redis.PING_()
-    
         redis.Close()
     Else
         Print("Could not connect to Redis server at " + redis.host + ":" + redis.port)
@@ -72,8 +50,7 @@ HISTORY
 TODO
 ----
 
-1. Wrap all the commands.
-2. Look into delivering the more complex responses in a different way than just a string.
-3. Build an extensive testing application.
-4. Implement a non blocking mode.
-
+1. Wrap the commands: SORT, HMSET, LINSERT, ZINTERSTORE, ZRANGEBYSCORE, ZREVRANGEBYSCORE, ZUNIONSTORE, MSET and MSETNX.
+2. Build an extensive testing application.
+3. Implement a non blocking mode.
+4. Look into delivering the more complex responses in a different way than just a string. Maybe.
