@@ -1202,7 +1202,7 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/zrange
     EndRem
-    Method ZRANGE_:String(key:String, start:Int, stop:Int, WITHSCORES:Int)
+    Method ZRANGE_:String(key:String, start:Int, stop:Int, WITHSCORES:Int = False)
         Local args:String[] = ["ZRANGE", key, String.FromInt(start), String.FromInt(stop)]
         If WITHSCORES Then
             args :+ ["WITHSCORES"]
