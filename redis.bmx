@@ -204,7 +204,7 @@ Type TRedisClient
             Return res.Trim()
         EndIf
     EndMethod
-    
+
 ' ! --- Redis Connection Methods ---
 
     Rem
@@ -326,6 +326,17 @@ Type TRedisClient
     EndRem
     Method MOVE_:String(key:String, db:String)
         Local args:String[] = ["MOVE", key, db]
+        _SendRequest(args)
+        Return _RecieveData()
+    EndMethod
+
+    Rem
+    bbdoc: OBJECT: Inspect the internals of Redis objects.
+    Returns an Integer reply or a bulk reply, depending on the subcommand.
+    Documentation: http://redis.io/commands/object
+    EndRem
+    Method OBJECT_:String(subcommand:String, arguments:String[])
+        Local args:String[] = ["OBJECT", subcommand] + arguments
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
