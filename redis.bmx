@@ -1202,13 +1202,14 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/zrange
     EndRem
-    Rem TODO
-    Method ZRANGE_:String(key:String, start:String, stop:String, [WITHSCORES]:String)
-        Local args:String[] = ["ZRANGE", key, start, stop, [WITHSCORES]]
+    Method ZRANGE_:String(key:String, start:Int, stop:Int, WITHSCORES:Int)
+        Local args:String[] = ["ZRANGE", key, String.FromInt(start), String.FromInt(stop)]
+        If WITHSCORES Then
+            args :+ ["WITHSCORES"]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: ZRANGEBYSCORE: Return a range of members in a sorted set, by score.
@@ -1271,13 +1272,14 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/zrevrange
     EndRem
-    Rem TODO
-    Method ZREVRANGE_:String(key:String, start:String, stop:String, [WITHSCORES]:String)
-        Local args:String[] = ["ZREVRANGE", key, start, stop, [WITHSCORES]]
+    Method ZREVRANGE_:String(key:String, start:Int, stop:Int, WITHSCORES:Int)
+        Local args:String[] = ["ZREVRANGE", key, String.FromInt(start), String.FromInt(stop)]
+        If WITHSCORES Then
+            args :+ ["WITHSCORES"]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: ZREVRANGEBYSCORE: Return a range of members in a sorted set, by score, with scores ordered from high to low.
