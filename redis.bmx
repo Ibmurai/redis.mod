@@ -513,15 +513,14 @@ Type TRedisClient
     Rem
     bbdoc: HMSET: Set multiple hash fields to multiple values.
     Returns a Status code reply.
+    The field_value parameter is an array of even length, containing pairs of fields and values: [field1, value1, field2, value2...].
     Documentation: http://www.redis.io/commands/hmset
     EndRem
-    Rem TODO
-    Method HMSET_:String(key:String, field value [field value ...]:String)
-        Local args:String[] = ["HMSET", key, field value [field value ...]]
+    Method HMSET_:String(key:String, field_value:String[])
+        Local args:String[] = ["HMSET", key] + field_value
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: HSET: Set the string value of a hash field.
@@ -605,15 +604,20 @@ Type TRedisClient
     Rem
     bbdoc: LINSERT: Insert an element before or after another element in a list.
     Returns an Integer reply.
+    Set BEFORE to true, to insert before. Set it to False, to insert AFTER.
     Documentation: http://www.redis.io/commands/linsert
     EndRem
-    Rem TODO
-    Method LINSERT_:String(key:String, BEFORE|AFTER:String, pivot:String, value:String)
-        Local args:String[] = ["LINSERT", key, BEFORE|AFTER, pivot, value]
+    Method LINSERT_:String(key:String, BEFORE:Int = True, pivot:String, value:String)
+        Local args:String[] = ["LINSERT", key]
+        If BEFORE Then
+            args :+ ["BEFORE"]
+        Else
+            args :+ ["AFTER"]
+        EndIf
+        args :+ [pivot, value]
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: LLEN: Get the length of a list.
@@ -1216,13 +1220,17 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/zrangebyscore
     EndRem
-    Rem TODO
-    Method ZRANGEBYSCORE_:String(key:String, min:String, max:String, [WITHSCORES]:String, [LIMIT offset count]:String)
-        Local args:String[] = ["ZRANGEBYSCORE", key, min, max, [WITHSCORES], [LIMIT offset count]]
+    Method ZRANGEBYSCORE_:String(key:String, _min:String, _max:String, WITHSCORES:Int = False, offset:Int = Null, count:Int = Null)
+        Local args:String[] = ["ZRANGEBYSCORE", key, _min, _max]
+        If WITHSCORES Then
+            args :+ ["WITHSCORES"]
+        EndIf
+        If offset <> Null And count <> Null
+            args :+ ["LIMIT", String.FromInt(offset), String.FromInt(count)]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: ZRANK: Determine the index of a member in a sorted set.
@@ -1286,13 +1294,17 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/zrevrangebyscore
     EndRem
-    Rem TODO
-    Method ZREVRANGEBYSCORE_:String(key:String, max:String, min:String, [WITHSCORES]:String, [LIMIT offset count]:String)
-        Local args:String[] = ["ZREVRANGEBYSCORE", key, max, min, [WITHSCORES], [LIMIT offset count]]
+    Method ZREVRANGEBYSCORE_:String(key:String, _min:String, _max:String, WITHSCORES:Int = False, offset:Int = Null, count:Int = Null)
+        Local args:String[] = ["ZREVRANGEBYSCORE", key, _min, _max]
+        If WITHSCORES Then
+            args :+ ["WITHSCORES"]
+        EndIf
+        If offset <> Null And count <> Null
+            args :+ ["LIMIT", String.FromInt(offset), String.FromInt(count)]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: ZREVRANK: Determine the index of a member in a sorted set, with scores ordered from high to low.
@@ -1443,28 +1455,26 @@ Type TRedisClient
     Rem
     bbdoc: MSET: Set multiple keys to multiple values.
     Returns a Status code reply.
+    The key_value parameter is an array of even length, containing pairs of keys and values: [key1, value1, key2, value2...].
     Documentation: http://www.redis.io/commands/mset
     EndRem
-    Rem TODO
-    Method MSET_:String(key value [key value ...]:String)
-        Local args:String[] = ["MSET", key value [key value ...]]
+    Method MSET_:String(key_value:String[])
+        Local args:String[] = ["MSET"] + key_value
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: MSETNX: Set multiple keys to multiple values, only if none of the keys exist.
     Returns an Integer reply.
+    The key_value parameter is an array of even length, containing pairs of keys and values: [key1, value1, key2, value2...].
     Documentation: http://www.redis.io/commands/msetnx
     EndRem
-    Rem TODO
-    Method MSETNX_:String(key value [key value ...]:String)
-        Local args:String[] = ["MSETNX", key value [key value ...]]
+    Method MSETNX_:String(key_value:String[])
+        Local args:String[] = ["MSETNX"] + key_value
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: SET: Set the string value of a key.

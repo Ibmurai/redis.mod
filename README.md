@@ -52,7 +52,7 @@ HISTORY
 TODO
 ----
 
-1. Wrap the commands: SORT, HMSET, LINSERT, ZINTERSTORE, ZRANGEBYSCORE, ZREVRANGEBYSCORE, ZUNIONSTORE, MSET and MSETNX.
+1. Wrap the commands: SORT, ZINTERSTORE, ZUNIONSTORE.
 2. Build an extensive testing application.
 3. Implement a non blocking mode.
 4. Look into delivering the more complex responses in a different way than just a string. Maybe.
