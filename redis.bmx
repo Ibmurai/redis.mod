@@ -2,7 +2,7 @@ SuperStrict
 
 Module Pub.Redis
 
-ModuleInfo "Version: 0.1"
+ModuleInfo "Version: 0.5a"
 ModuleInfo "Author: Jens Riisom Schultz"
 ModuleInfo "License: BSD License"
 
