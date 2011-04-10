@@ -5,7 +5,7 @@ Requirements
 ------------
 
  *  This client utilizes "The new unified request protocol", so it will only work with Redis >= 1.2.
- *  The "full" (see TODO) Redis 2.2.4 command set is available, but commands will only work with a Redis server supporting them (i.e OBJECT is only available from Redis 2.2.3+).
+ *  The full Redis 2.2.4 command set is available, but commands will only work with a Redis server supporting them (i.e OBJECT is only available from Redis 2.2.3+).
 
 Building
 --------
@@ -17,7 +17,7 @@ Building
 Usage
 -----
 
- *  All Redis commands are called on a client instance by calling client.COMMAND_(). (See TODO for missing commands)
+ *  All Redis commands are called on a client instance by calling client.COMMAND_().
 
  *  The Redis commands all end with an underscore, to eliminate keyword clashes (i.e. SELECT) and distinguish Redis functionality from other functionality on the TRedisClient type.
  
@@ -45,6 +45,10 @@ Use it like this:
 HISTORY
 -------
 
+### v0.5a
+
+ *  All commands implemented. A fully working, albeit pretty untested, blocking Redis client.
+
 ### v0.1a
 
  *  First version. Fully working implementation of the protocol.
@@ -52,7 +56,6 @@ HISTORY
 TODO
 ----
 
-1. Wrap the SORT command.
-2. Build an extensive testing application.
-3. Implement a non blocking mode.
-4. Look into delivering the more complex responses in a different way than just a string. Maybe.
+1. Build an extensive testing application.
+2. Implement a non blocking mode.
+3. Look into delivering the more complex responses in a different way than just a string. Maybe.

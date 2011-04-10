@@ -390,13 +390,33 @@ Type TRedisClient
     Returns a Multi-bulk reply.
     Documentation: http://www.redis.io/commands/sort
     EndRem
-    Rem TODO
-    Method SORT_:String(key:String, [BY pattern]:String, [LIMIT offset count]:String, [GET pattern [GET pattern ...]]:String, [ASC|DESC]:String, [ALPHA]:String, [STORE destination]:String)
-        Local args:String[] = ["SORT", key, [BY pattern], [LIMIT offset count], [GET pattern [GET pattern ...]], [ASC|DESC], [ALPHA], [STORE destination]]
+    Method SORT_:String(key:String, BY_pattern:String = Null, offset:Int = Null, count:Int = Null, GET_patterns:String[] = Null, DESC:Int = True, ALPHA:Int = False, STORE_destination:String = Null)
+        Local args:String[] = ["SORT", key]
+        If BY_pattern <> Null Then
+            args :+ ["BY", BY_pattern]
+        EndIf
+        If offset <> Null And count <> Null Then
+            args :+ ["LIMIT", String.FromInt(offset), String.FromInt(count)]
+        EndIf
+        If GET_patterns <> Null Then
+            For Local GET_pattern:String = EachIn GET_patterns
+                args :+ ["GET", GET_pattern]
+            Next
+        EndIf
+        If DESC Then
+            args :+ ["DESC"]
+        Else
+            args :+ ["ASC"]
+        EndIf
+        If ALPHA Then
+            args :+ ["ALPHA"]
+        EndIf
+        If STORE_destination <> Null Then
+            args :+ ["STORE", STORE_destination]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: TTL: Get the time to live for a key.
