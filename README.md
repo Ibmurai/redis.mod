@@ -17,9 +17,11 @@ Building
 Usage
 -----
 
- *  All Redis commands will eventually be callable on a client instance by calling client.COMMAND_().
+ *  All Redis commands are called on a client instance by calling client.COMMAND_(). (See TODO for missing commands)
 
  *  The Redis commands all end with an underscore, to eliminate keyword clashes (i.e. SELECT) and distinguish Redis functionality from other functionality on the TRedisClient type.
+ 
+ *  All commands return String.
 
 Use it like this:
 
