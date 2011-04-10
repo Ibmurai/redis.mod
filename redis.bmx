@@ -1191,15 +1191,20 @@ Type TRedisClient
     Rem
     bbdoc: ZINTERSTORE: Intersect multiple sorted sets and store the resulting sorted set in a new key.
     Returns an Integer reply.
+    AGGREGATE must be set to one of "SUM", "MIN" or "MAX", if specified.
     Documentation: http://www.redis.io/commands/zinterstore
     EndRem
-    Rem TODO
-    Method ZINTERSTORE_:String(destination:String, numkeys:String, key [key ...]:String, [WEIGHTS weight [weight ...]]:String, [AGGREGATE SUM|MIN|MAX]:String)
-        Local args:String[] = ["ZINTERSTORE", destination, numkeys, key [key ...], [WEIGHTS weight [weight ...]], [AGGREGATE SUM|MIN|MAX]]
+    Method ZINTERSTORE_:String(destination:String, keys:String[], WEIGHTS:String[], AGGREGATE:String = Null)
+        Local args:String[] = ["ZINTERSTORE", destination, String.FromInt(keys.length)] + keys
+        If weights <> Null
+            args :+ ["WEIGHTS"] + WEIGHTS
+        EndIf
+        If AGGREGATE <> Null
+            args :+ ["AGGREGATE", AGGREGATE]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
     Rem
     bbdoc: ZRANGE: Return a range of members in a sorted set, by index.
@@ -1332,13 +1337,17 @@ Type TRedisClient
     Returns an Integer reply.
     Documentation: http://www.redis.io/commands/zunionstore
     EndRem
-    Rem TODO
-    Method ZUNIONSTORE_:String(destination:String, numkeys:String, key [key ...]:String, [WEIGHTS weight [weight ...]]:String, [AGGREGATE SUM|MIN|MAX]:String)
-        Local args:String[] = ["ZUNIONSTORE", destination, numkeys, key [key ...], [WEIGHTS weight [weight ...]], [AGGREGATE SUM|MIN|MAX]]
+    Method ZUNIONSTORE_:String(destination:String, keys:String[], WEIGHTS:String[], AGGREGATE:String = Null)
+        Local args:String[] = ["ZUNIONSTORE", destination, String.FromInt(keys.length)] + keys
+        If weights <> Null
+            args :+ ["WEIGHTS"] + WEIGHTS
+        EndIf
+        If AGGREGATE <> Null
+            args :+ ["AGGREGATE", AGGREGATE]
+        EndIf
         _SendRequest(args)
         Return _RecieveData()
     EndMethod
-    EndRem
 
 ' ! --- Redis String Methods ---
 
