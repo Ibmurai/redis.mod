@@ -42,7 +42,7 @@ Use it like this:
         Print("Could not connect to Redis server at " + redis.host + ":" + redis.port)
     EndIf
 
-HISTORY
+History
 -------
 
 ### v0.5a
